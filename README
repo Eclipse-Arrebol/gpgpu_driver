@@ -1,0 +1,164 @@
+# gpgpu_driver
+
+基于 QEMU 的虚拟 GPGPU 软件栈，目标是在自制虚拟 GPU 上运行 Qwen2-0.5B INT8 推理。
+
+## 项目简介
+
+本项目从零实现了一套类 CUDA 的 GPU 执行环境，运行在 QEMU 模拟的 RISC-V 虚拟机上。整个栈从硬件模拟到算子库全部手写，主要用于学习 GPU 软件栈的底层原理。
+
+**运行环境**：openEuler 24.03（RISC-V，内核 6.6.0），QEMU 虚拟机，宿主机 WSL2（Ubuntu 24.04）
+
+---
+
+## 架构概览
+
+```
+用户程序
+    ↓
+libgpgpu（用户态运行时）
+    ↓ ioctl / mmap
+gpgpu_drv.ko（Linux PCI 驱动）
+    ↓ MMIO / 中断
+QEMU 虚拟 GPGPU 设备（hw/gpgpu/）
+    ↓
+RISC-V SIMT 解释器（gpgpu_core.c）
+```
+
+---
+
+## 目录结构
+
+```
+gpgpu-driver/
+├── gpgpu_drv.c          # Linux PCI 驱动
+├── Makefile
+├── kernel-headers/      # 编译驱动用的内核头文件
+├── kernels/             # GPU kernel 汇编源码
+│   ├── vec_add.S        # 向量加法
+│   ├── fmadd.S          # fmadd 测试
+│   └── gemm.S           # 矩阵乘法
+├── lib/
+│   ├── libgpgpu.h
+│   ├── libgpgpu.c       # 用户态运行时
+│   ├── include/
+│   │   ├── buddy.h
+│   │   └── slab_cache.h
+│   ├── src/
+│   │   ├── buddy.c      # Buddy System 分配器
+│   │   └── slab_cache.c # Slab 分配器
+│   └── test/            # 测试程序
+│       ├── test_vec_add.c
+│       ├── test_fmadd.c
+│       └── test_gemm.c
+└── build/               # 编译产物
+```
+
+QEMU 设备侧代码位于：`~/qemu/qemu-camp-2026-exper-Eclipse-Arrebol/hw/gpgpu/`
+
+---
+
+## 已完成
+
+| 里程碑 | 内容                                                         |
+| ------ | ------------------------------------------------------------ |
+| 1.1    | PCI 驱动骨架，probe + 设备认领                               |
+| 1.2    | BAR 映射 + 字符设备 + mmap                                   |
+| 1.3    | ioctl dispatch + 中断 + 等待队列                             |
+| 1.4    | Buddy System + Slab Allocator + libgpgpu 三个核心 API        |
+| 1.5    | 向量加法 Demo 端到端跑通，32 线程 PASS                       |
+| 2.1    | RISC-V 解释器重构 + 第二档 FP 指令（flw/fsw/fmadd/fsub/fdiv/fsqrt/flt/fmin/fmax） |
+| 2.2    | VRAM 扩容 64MB → 1GB                                         |
+| 3.1    | 浮点 GEMM 算子（4×32×8，128 线程，误差为零）                 |
+
+---
+
+## 构建与部署
+
+### 驱动编译
+
+```bash
+cd ~/gpgpu-driver
+make driver          # 交叉编译驱动模块
+make deploy          # scp 传到虚拟机
+```
+
+### 用户态库与测试
+
+```bash
+cd ~/gpgpu-driver/lib
+make                 # 编译 libgpgpu
+cd test
+make test_gemm
+make deploy
+```
+
+### kernel 汇编编译
+
+```bash
+riscv64-unknown-elf-gcc -march=rv32im_zicsr_zifencei_f -mabi=ilp32f \
+    -nostdlib -Wl,-Ttext=0x0 -o gemm.elf gemm.S
+riscv64-unknown-elf-objcopy -O binary gemm.elf gemm.bin
+```
+
+### 虚拟机操作
+
+```bash
+# 启动虚拟机
+cd ~/qemu/vm && ./start_vm_gpgpu.sh
+
+# SSH 连接
+ssh -p 12055 root@localhost   # 密码 openEuler12#$
+
+# 每次启动后校时
+date -s "2026-xx-xx xx:xx:xx"
+
+# 加载驱动
+sudo insmod gpgpu_drv.ko
+dmesg | tail -20
+```
+
+### QEMU 设备修改后重新编译
+
+```bash
+cd ~/qemu/qemu-camp-2026-exper-Eclipse-Arrebol
+make -j$(nproc)
+```
+
+---
+
+## 设备参数
+
+| 项目          | 值                |
+| ------------- | ----------------- |
+| PCI Vendor ID | 0x1234            |
+| PCI Device ID | 0x1337            |
+| BAR0          | 控制寄存器（1MB） |
+| BAR2          | VRAM（1GB）       |
+| BAR4          | Doorbell（64KB）  |
+| 设备节点      | /dev/gpgpu        |
+| PCI 地址      | 0000:01:00.0      |
+
+---
+
+## 后续计划
+
+- **3.1** Softmax 算子
+- **3.1** RMSNorm 算子
+- **3.2** 算子测试框架（Host vs GPU 误差对比）
+- **4.1** Qwen2-0.5B INT8 权重加载器
+- **4.2** Attention + FFN 推理引擎
+- **4.3** Tokenizer + 采样
+- **4.4** 端到端推理，输出连贯中文
+
+---
+
+## 踩过的坑
+
+| 问题                            | 原因                          | 解决方法                             |
+| ------------------------------- | ----------------------------- | ------------------------------------ |
+| `pci_alloc_irq_vectors` 返回 -1 | RISC-V virt PLIC 不支持 MSI-X | 改用 Legacy INTx                     |
+| Buddy 段错误                    | buddy_init 硬编码 order 18    | 改为按实际 size 动态计算             |
+| `gpgpu_ctx` 栈溢出              | page_order[262144] 占 256KB   | 改用 malloc 堆分配                   |
+| mmap 映射到 ctrl 而非 VRAM      | vm_pgoff==0 是 BAR0           | mmap offset 改为 `1 * PAGE_SIZE`     |
+| FP 寄存器直接运算结果错误       | fpr[] 存的是 uint32_t 位模式  | 读写都要过 u32_to_float/float_to_u32 |
+| GEMM kernel 结果全 0            | max_cycles=1000 不够用        | 改为 100000                          |
