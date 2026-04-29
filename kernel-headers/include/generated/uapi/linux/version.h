@@ -1,0 +1,11 @@
+#define LINUX_VERSION_CODE 394752
+#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + ((c) > 255 ? 255 : (c)))
+#define LINUX_VERSION_MAJOR 6
+#define LINUX_VERSION_PATCHLEVEL 6
+#define LINUX_VERSION_SUBLEVEL 0
+#define OPENEULER_LTS 1
+#define OPENEULER_MAJOR 2403
+#define OPENEULER_MINOR 1
+#define OPENEULER_VERSION(a,b) (((a) << 8) + (b))
+#define OPENEULER_VERSION_CODE 615169
+#define OPENEULER_RELEASE "98.0.0.103.oe2403sp2"

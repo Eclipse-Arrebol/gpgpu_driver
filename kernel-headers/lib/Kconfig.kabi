@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: GPL-2.0-only
+config KABI_COMPAT
+	bool "Enable kabi compatible fix"
+	depends on X86_64 || ARM64
+	default n
+	help
+          Support KABI compatibility fix. Some distributions need to maintain
+          and fix KABI compatibility so that drivers do not need to be recompiled
+          during kernel upgrades. Fixing KABI compatibility is a dangerous and
+          hacking job. Developers need to know clearly what they are doing and
+          the risks they may face. Related KABI fix actions are closely related
+          to the processor architecture. Fixes may not be appropriate for all
+          architectures. Improper use may cause system panic.
+
+	  If unsure, say N.
+
+config KABI_RESERVE
+	bool "Enable KABI PADDING RESERVE"
+	default y
+	depends on KABI_COMPAT
+	help
+	  This option enables KABI padding reserve.
+	  For some embedded system, KABI padding reserve may be not necessary.
+	  Disable it on demand.
+
+config KABI_SIZE_ALIGN_CHECKS
+	bool "Enable more stringent kabi checks in the macros"
+	default y
+	depends on KABI_RESERVE
+	help
+	  This option enables more stringent kabi checks. Those must be disable
+	  in case of a debug-build because they allow to change struct sizes.

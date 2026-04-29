@@ -1,0 +1,3 @@
+#define compat__vdso_flush_icache_offset	0x0814
+#define compat__vdso_getcpu_offset	0x0808
+#define compat__vdso_rt_sigreturn_offset	0x0800

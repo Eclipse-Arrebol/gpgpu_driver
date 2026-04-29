@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: GPL-2.0-only
+config SPI_HISI_SFC
+	tristate "Hisilicon FMC SPI NOR Flash Controller(SFC)"
+	depends on ARCH_HISI || COMPILE_TEST
+	depends on HAS_IOMEM
+	help
+	  This enables support for HiSilicon FMC SPI NOR flash controller.
+
+config SPI_NXP_SPIFI
+	tristate "NXP SPI Flash Interface (SPIFI)"
+	depends on OF && (ARCH_LPC18XX || COMPILE_TEST)
+	depends on HAS_IOMEM
+	help
+	  Enable support for the NXP LPC SPI Flash Interface controller.
+
+	  SPIFI is a specialized controller for connecting serial SPI
+	  Flash. Enable this option if you have a device with a SPIFI
+	  controller and want to access the Flash as a mtd device.
+
+config SPI_SOPHGO_SPIFMC
+	tristate "Sophgo SPI Flash Master Controller (SPIFMC)"
+	depends on ARCH_SOPHGO || COMPILE_TEST
+	depends on HAS_IOMEM
+	help
+	  Enable support for the Sophgo SPI Flash Master controller.
+
+	  SPIFMC is a master controller to control serial SPI Flash.
+	  Enable this option if you have a device with a SPIFMC controller
+	  and want to access the Flash as a mtd device.

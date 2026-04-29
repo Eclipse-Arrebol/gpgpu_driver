@@ -1,0 +1,11 @@
+#
+# se chip configuration
+#
+config SW_SE_CHIP
+	tristate "wst se chip driver"
+	depends on LOONGARCH
+	help
+	  If you have a wst security chip,
+	  say Yes and it will be accessible from within Linux.
+	  To compile this driver as a module, choose M here;
+	  the module will be called tpm_tis_i2c.  If unsure, say N.

@@ -1,0 +1,7 @@
+[
+  {
+    "directory": "/home/hp/gpgpu-driver/test",
+    "command": "riscv64-linux-gnu-gcc -o test_gpgpu test_gpgpu.c",
+    "file": "test_gpgpu.c"
+  }
+]

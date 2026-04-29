@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-2.0-only
+# Copyright (c) 2025 Huawei Technologies Co., Ltd
+
+config BPF_RVI
+	bool "Resource View Isolation with BPF"
+	depends on BPF_EVENTS
+	depends on BPF_SYSCALL
+	depends on BPF_JIT
+	depends on CPUSETS
+	default n
+	help
+	  A resource view is a bundle of interfaces under /proc and /sys
+	  providing system resource information, e.g. /proc/{cpu,mem}info. This
+	  feature implements a container-sensitive resource view, whose output
+	  can be customized based on the container's configuration and its
+	  limitation on many kinds of system resources. This feature aims to
+	  be a substitute for LXCFS with better performance and scalability.
+
+	  If you are unsure how to answer this question, answer N.

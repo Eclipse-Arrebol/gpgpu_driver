@@ -1,0 +1,102 @@
+# SPDX-License-Identifier: GPL-2.0-only
+config CRYPTO_DEV_CCP_DD
+	tristate "Secure Processor device driver"
+	depends on CPU_SUP_AMD || ARM64
+	default m
+	help
+	  Provides AMD Secure Processor device driver.
+	  If you choose 'M' here, this module will be called ccp.
+
+config CRYPTO_DEV_SP_CCP
+	bool "Cryptographic Coprocessor device"
+	default y
+	depends on CRYPTO_DEV_CCP_DD && DMADEVICES
+	select HW_RANDOM
+	select DMA_ENGINE
+	select CRYPTO_SHA1
+	select CRYPTO_SHA256
+	help
+	  Provides the support for AMD Cryptographic Coprocessor (CCP) device
+	  which can be used to offload encryption operations such as SHA, AES
+	  and more.
+
+config CRYPTO_DEV_CCP_CRYPTO
+	tristate "Encryption and hashing offload support"
+	default m
+	depends on CRYPTO_DEV_CCP_DD
+	depends on CRYPTO_DEV_SP_CCP
+	select CRYPTO_HASH
+	select CRYPTO_SKCIPHER
+	select CRYPTO_AUTHENC
+	select CRYPTO_RSA
+	select CRYPTO_LIB_AES
+	help
+	  Support for using the cryptographic API with the AMD Cryptographic
+	  Coprocessor. This module supports offload of SHA and AES algorithms.
+	  If you choose 'M' here, this module will be called ccp_crypto.
+
+config CRYPTO_DEV_SP_PSP
+	bool "Platform Security Processor (PSP) device"
+	default y
+	depends on CRYPTO_DEV_CCP_DD && X86_64
+	help
+	 Provide support for the AMD Platform Security Processor (PSP).
+	 The PSP is a dedicated processor that provides support for key
+	 management commands in Secure Encrypted Virtualization (SEV) mode,
+	 along with software-based Trusted Execution Environment (TEE) to
+	 enable third-party trusted applications.
+
+config HYGON_GM
+	bool "Hygon GM (sm2/sm3/sm4) Interface"
+	default y
+	depends on CRYPTO_DEV_CCP_CRYPTO && X86_64
+	select CRYPTO_SM3_GENERIC
+	help
+	  Hygon GM ccp driver
+
+config CRYPTO_DEV_CCP_DEBUGFS
+	bool "Enable CCP Internals in DebugFS"
+	default n
+	depends on CRYPTO_DEV_SP_CCP
+	help
+	  Expose CCP device information such as operation statistics, feature
+	  information, and descriptor queue contents.
+
+config HYGON_PSP2CPU_CMD
+	bool "Hygon PSP2CPU Command Interface"
+	default y
+	depends on CRYPTO_DEV_SP_PSP
+	help
+	  Hygon PSP2CPU Command Support
+
+config TDM_DEV_HYGON
+	bool "Hygon TDM Interface"
+	default y
+	depends on CRYPTO_DEV_CCP_DD
+	depends on HYGON_PSP2CPU_CMD
+	help
+	  Hygon TDM driver
+
+config TDM_KERNEL_GUARD
+	tristate "Hygon TDM kernel guard"
+	default y
+	depends on TDM_DEV_HYGON
+	depends on CRYPTO_DEV_CCP_DD
+	depends on CRYPTO_SM3
+	help
+	  The key part of kernel is protected by TDM technology, SCT and IDT
+	  are protected by default, and others are added later according to the
+	  requirements.
+
+config CRYPTO_DEV_HCT
+	tristate "HCT CCP device"
+	default m
+	depends on X86_64
+	depends on VFIO
+	select VFIO_MDEV
+	help
+	  Provides hygon crypto technology ccp device driver.
+	  Support virtualize ccp devices based on mediated devices.
+	  Support multi-process and virtual machines.
+	  Support host-noiommu mode memory encryption function.
+	  If you choose 'M' here, this module will be called hct ccp.

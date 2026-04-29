@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Motorcomm network device configuration
+#
+
+config NET_VENDOR_MOTORCOMM
+	bool "Motorcomm devices"
+	default y
+	help
+	  If you have a network (Ethernet) device belonging to this class,
+	  say Y.
+
+	  Note that the answer to this question doesn't directly affect the
+	  kernel: saying N will just cause the configurator to skip all
+	  the questions about Motorcomm devices. If you say Y, you will be
+	  asked for your specific device in the following questions.
+
+if NET_VENDOR_MOTORCOMM
+
+config YT6801
+	tristate "Motorcomm(R) 6801 PCI-Express Gigabit Ethernet support"
+	depends on PCI && NET
+	select MOTORCOMM_PHY
+	help
+	  This driver supports Motorcomm(R) 6801 gigabit ethernet family of
+	  adapters.
+
+endif # NET_VENDOR_MOTORCOMM

@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# arm spe dirver
+#
+config ARM_SPE_MEM_SAMPLING
+	bool "In-kernel SPE for driver for page access profiling"
+	depends on ARM_SPE_PMU
+	default n
+	help
+	  Enable support for the ARMv8.2 Statistical Profiling Extension (SPE),
+	  which provides periodic sampling of memory accesses and operations
+	  in the CPU pipeline. This extension allows the driver to monitor
+	  memory access patterns, which can help with performance tuning,
+	  debugging, and analyzing memory-related bottlenecks.
+
+	  This feature is only available on ARM64 architecture and will fall
+	  back to the native software sampling mechanism if the ARM SPE PMU
+	  (Performance Monitoring Unit) is in use. When enabled, this
+	  configuration will activate the in-kernel driver to collect profiling
+	  data on page-level memory accesses.

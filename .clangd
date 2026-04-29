@@ -1,0 +1,13 @@
+CompileFlags:
+  Add:
+    - --target=riscv64-linux-gnu
+    - -I/home/hp/gpgpu-driver/kernel-headers/include
+    - -I/home/hp/gpgpu-driver/kernel-headers/include/generated
+    - -I/home/hp/gpgpu-driver/kernel-headers/include/uapi
+    - -I/home/hp/gpgpu-driver/kernel-headers/arch/riscv/include
+    - -I/home/hp/gpgpu-driver/kernel-headers/arch/riscv/include/generated
+    - -I/home/hp/gpgpu-driver/kernel-headers/arch/riscv/include/uapi
+    - -I/home/hp/gpgpu-driver/kernel-headers/arch/riscv/include/generated/uapi
+    - -D__KERNEL__
+    - -DMODULE
+    - -DCONFIG_64BIT

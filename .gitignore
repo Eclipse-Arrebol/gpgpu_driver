@@ -1,0 +1,10 @@
+build/
+*.o
+*.ko
+*.mod
+*.mod.c
+*.symvers
+*.order
+modules.builtin
+*.elf
+*.bin
