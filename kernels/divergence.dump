@@ -1,0 +1,28 @@
+
+divergence.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00052583          	lw	a1,0(a0)
+   4:	00452603          	lw	a2,4(a0)
+   8:	f14022f3          	csrr	t0,mhartid
+   c:	01f2f293          	andi	t0,t0,31
+  10:	00229313          	slli	t1,t0,0x2
+  14:	0012fe93          	andi	t4,t0,1
+  18:	000e9c63          	bnez	t4,30 <odd_case>
+  1c:	006583b3          	add	t2,a1,t1
+  20:	0000be37          	lui	t3,0xb
+  24:	aaae0e13          	addi	t3,t3,-1366 # aaaa <__global_pointer$+0x9266>
+  28:	01c3a023          	sw	t3,0(t2)
+  2c:	0140006f          	j	40 <after>
+
+00000030 <odd_case>:
+  30:	006603b3          	add	t2,a2,t1
+  34:	0000ce37          	lui	t3,0xc
+  38:	bbbe0e13          	addi	t3,t3,-1093 # bbbb <__global_pointer$+0xa377>
+  3c:	01c3a023          	sw	t3,0(t2)
+
+00000040 <after>:
+  40:	00100073          	ebreak
