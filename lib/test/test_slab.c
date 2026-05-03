@@ -1,5 +1,6 @@
 #include "../include/buddy.h"
 #include "../include/slab_cache.h"
+#include "../libgpgpu.h"
 #include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -11,7 +12,7 @@ int main() {
     struct slab_cache      cache;
     uint64_t              *ptr = (uint64_t *)malloc(1ULL * 1024 * 1024 * 1024);
     buddy_init(&alloc, (uint64_t)ptr, 1ULL * 1024 * 1024 * 1024);
-    slab_cache_init(&cache, 32, &alloc);
+    slab_cache_init(&cache, 32, &alloc, PAGE_ORDER_SLAB_32);
 
     /*分配内存*/
     uint64_t slab_offset = slab_alloc(&cache);

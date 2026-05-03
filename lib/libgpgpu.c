@@ -27,6 +27,7 @@ static struct slab_cache *get_slab(gpgpu_ctx *ctx, uint8_t marker) {
 }
 
 // ── 内部辅助：根据 size 选择 slab_cache 和对应 marker ─
+// 修复后的 route_slab
 static struct slab_cache *route_slab(gpgpu_ctx *ctx, size_t size,
                                      uint8_t *marker_out) {
     if (size <= 32) {
@@ -49,11 +50,11 @@ static struct slab_cache *route_slab(gpgpu_ctx *ctx, size_t size,
         *marker_out = PAGE_ORDER_SLAB_512;
         return &ctx->slab_512;
     }
-    if (size < 4096) {
+    if (size <= 2048) {
         *marker_out = PAGE_ORDER_SLAB_2048;
         return &ctx->slab_2048;
     }
-    return NULL;
+    return NULL; // 走 buddy
 }
 
 // ── gpuInit ───────────────────────────────────────────
@@ -83,36 +84,27 @@ int gpuInit(gpgpu_ctx *ctx, const char *dev_path, uint64_t vram_size) {
         return -1;
     }
 
-    if (slab_cache_init(&ctx->slab_32, 32, &ctx->buddy) < 0)
+    if (slab_cache_init(&ctx->slab_32, 32, &ctx->buddy, PAGE_ORDER_SLAB_32) < 0)
         goto err_slab;
 
-    if (slab_cache_init(&ctx->slab_64, 64, &ctx->buddy) < 0)
+    if (slab_cache_init(&ctx->slab_64, 64, &ctx->buddy, PAGE_ORDER_SLAB_64) < 0)
         goto err_slab;
 
-    if (slab_cache_init(&ctx->slab_128, 128, &ctx->buddy) < 0)
+    if (slab_cache_init(&ctx->slab_128, 128, &ctx->buddy, PAGE_ORDER_SLAB_128) <
+        0)
         goto err_slab;
 
-    if (slab_cache_init(&ctx->slab_256, 256, &ctx->buddy) < 0)
+    if (slab_cache_init(&ctx->slab_256, 256, &ctx->buddy, PAGE_ORDER_SLAB_256) <
+        0)
         goto err_slab;
 
-    if (slab_cache_init(&ctx->slab_512, 512, &ctx->buddy) < 0)
+    if (slab_cache_init(&ctx->slab_512, 512, &ctx->buddy, PAGE_ORDER_SLAB_512) <
+        0)
         goto err_slab;
 
-    if (slab_cache_init(&ctx->slab_2048, 2048, &ctx->buddy) < 0)
+    if (slab_cache_init(&ctx->slab_2048, 2048, &ctx->buddy,
+                        PAGE_ORDER_SLAB_2048) < 0)
         goto err_slab;
-
-    ctx->buddy.page_order[ctx->slab_32.slab_base / PAGE_SIZE] =
-        PAGE_ORDER_SLAB_32;
-    ctx->buddy.page_order[ctx->slab_64.slab_base / PAGE_SIZE] =
-        PAGE_ORDER_SLAB_64;
-    ctx->buddy.page_order[ctx->slab_128.slab_base / PAGE_SIZE] =
-        PAGE_ORDER_SLAB_128;
-    ctx->buddy.page_order[ctx->slab_256.slab_base / PAGE_SIZE] =
-        PAGE_ORDER_SLAB_256;
-    ctx->buddy.page_order[ctx->slab_512.slab_base / PAGE_SIZE] =
-        PAGE_ORDER_SLAB_512;
-    ctx->buddy.page_order[ctx->slab_2048.slab_base / PAGE_SIZE] =
-        PAGE_ORDER_SLAB_2048;
 
     return 0;
 

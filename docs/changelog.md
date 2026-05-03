@@ -8,3 +8,14 @@
     - 早期 CUDA 文档明确要求 shuffle 必须在"warp-uniform 上下文"中使用。新版（Volta+）引入了带 mask 的 __shfl_sync(mask, ...) 来允许部分参与，但那是后话。
     - 目前的设计照 "必须全 lane 参与" 的简单约束来
 
+# 5.2
+    这写rmsnorm算子的时候遇到了一个问题就是slab是分配一页的大小即4096，但是如果分配的内存超过4096，之前的逻辑就是没有实现扩容，导致分配空间不足，返回错误，为了实现这个扩容的功能，新增了一个数据结果叫做slab_meta,用于记录每一个slab的大小和空间和类型，扩容的时候需要将slab切割，然后将其切割的部分加入空闲列表，但是free的时候如果整个页都空闲的话，一开始的设计是将整个页都回收，但是怎么找到整个页的内容呢，其在空闲链表中是散的，只能使用遍历地址，看看满不满足meta中的数据信息，但是这有引发了一个问题就是一空闲就回收会到致系统频繁的回收分配内存，所有最终就使用了保留一个页的方式。
+
+    在重新测试 test_fmadd 时,32 个 c 元素读出来全是 1.0,说明 kernel 的 fsw 没生效。我做了两轮 debug:
+    在 host 直接读 vram[c_off],仍然是 1.0,确认是 kernel 没写,不是 D2H 拷贝问题
+    让 kernel 把 a0 / a3 / t4 写到已知位置,host 读出来全是 0x40000000,而这正好是 float 2.0f 的位模式——意味着 kernel 的 debug sw 根本没改 vram,反推 a0 错了
+
+    查 QEMU gpgpu_ctrl_write 发现 GPGPU_REG_KERNEL_ARGS_LO/HI 没有 case,驱动写过来的 args 地址被静默丢弃,s->kernel.kernel_args 始终是 reset 时的 0。
+    但这个 bug 一直存在,之前测试为什么过了?因为旧 slab 的切片顺序导致 args_off 恰好是 0,和 QEMU 这边的 0 巧合一致,kernel 用 a0=0 读 vram[0] 也能拿到 args。slab 重构改了切片顺序(头插),args_off 变成 0xfe0,巧合不再成立,bug 暴露。
+    slab 重构没引入 bug,它揭露了潜伏的 bug。
+

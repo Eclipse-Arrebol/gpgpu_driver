@@ -38,7 +38,7 @@ int main(void) {
     printf("[2] alloc: kernel=0x%lx args=0x%lx A=0x%lx B=0x%lx C=0x%lx\n",
            kernel_off, args_off, a_off, b_off, c_off);
 
-    FILE *f = fopen("/tmp/fmadd_test.bin", "rb");
+    FILE *f = fopen("/tmp/fmadd.bin", "rb");
     if (!f) {
         fprintf(stderr, "open fmadd_test.bin failed\n");
         return 1;
@@ -73,14 +73,24 @@ int main(void) {
     uint32_t grid[3]  = {1, 1, 1};
     uint32_t block[3] = {N, 1, 1};
     ret = gpuLaunchKernel(ctx, kernel_off, args_off, grid, block, 0);
-    if (ret < 0) {
-        fprintf(stderr, "gpuLaunchKernel failed: %d\n", ret);
-        return 1;
-    }
     printf("[6] kernel done\n");
 
-    /* 7. 读回结果 */
-    gpuMemcpy(ctx, c_off, hc, N * 4, 1); /* D2H */
+    /* DEBUG: 直接读 c_off 处的 VRAM 内容(不经过 D2H)*/
+    {
+        float *vram_c = (float *)((uint8_t *)ctx->vram_mmap + c_off);
+        printf("[DEBUG] vram[c_off] = ");
+        for (int i = 0; i < 4; i++)
+            printf("%f ", vram_c[i]);
+        printf("\n");
+
+        float *vram_a = (float *)((uint8_t *)ctx->vram_mmap + a_off);
+        printf("[DEBUG] vram[a_off] = ");
+        for (int i = 0; i < 4; i++)
+            printf("%f ", vram_a[i]);
+        printf("\n");
+    }
+
+    gpuMemcpy(ctx, c_off, hc, N * 4, 1);
     printf("[7] result read back\n");
 
     /* 8. 验证 */
@@ -88,7 +98,7 @@ int main(void) {
     for (int i = 0; i < N; i++) {
 
         if (hc[i] != 7.0f) {
-            printf("  FAIL \n");
+            printf("  FAIL%f \n", hc[i]);
             ok = 0;
         }
     }
@@ -96,6 +106,12 @@ int main(void) {
         printf("[8] PASS: all %d elements correct (each = %d)\n", N, N);
     else
         printf("[8] FAIL\n");
+
+    uint32_t *vram_a = (uint32_t *)((uint8_t *)ctx->vram_mmap + a_off);
+    printf("[DEBUG] a3 (expect c_off=0x%x) = 0x%x\n", (uint32_t)c_off,
+           vram_a[0]);
+    printf("[DEBUG] t4 (expect c_off+0)    = 0x%x\n", vram_a[1]);
+    printf("[DEBUG] a0 (expect args_off)   = 0x%x\n", vram_a[2]);
 
     gpuDestroy(ctx);
     free(ctx);
