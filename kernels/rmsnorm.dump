@@ -1,0 +1,62 @@
+
+rmsnorm.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00052583          	lw	a1,0(a0)
+   4:	00452603          	lw	a2,4(a0)
+   8:	00852683          	lw	a3,8(a0)
+   c:	00c52703          	lw	a4,12(a0)
+  10:	01052587          	flw	fa1,16(a0)
+  14:	01452607          	flw	fa2,20(a0)
+  18:	f14022f3          	csrr	t0,mhartid
+  1c:	01f2f293          	andi	t0,t0,31
+  20:	07000e13          	li	t3,112
+  24:	03c28333          	mul	t1,t0,t3
+  28:	006583b3          	add	t2,a1,t1
+  2c:	f00000d3          	fmv.w.x	ft1,zero
+  30:	01c00293          	li	t0,28
+
+00000034 <sum_loop>:
+  34:	0003a007          	flw	ft0,0(t2)
+  38:	10007053          	fmul.s	ft0,ft0,ft0
+  3c:	0000f0d3          	fadd.s	ft1,ft1,ft0
+  40:	00438393          	addi	t2,t2,4
+  44:	fff28293          	addi	t0,t0,-1
+  48:	fe0296e3          	bnez	t0,34 <sum_loop>
+  4c:	20108053          	fmv.s	ft0,ft1
+  50:	0010010b          	.insn	4, 0x0010010b
+  54:	00207053          	fadd.s	ft0,ft0,ft2
+  58:	0020010b          	.insn	4, 0x0020010b
+  5c:	00207053          	fadd.s	ft0,ft0,ft2
+  60:	0040010b          	.insn	4, 0x0040010b
+  64:	00207053          	fadd.s	ft0,ft0,ft2
+  68:	0080010b          	.insn	4, 0x0080010b
+  6c:	00207053          	fadd.s	ft0,ft0,ft2
+  70:	0100010b          	.insn	4, 0x0100010b
+  74:	00207053          	fadd.s	ft0,ft0,ft2
+  78:	10b070d3          	fmul.s	ft1,ft0,fa1
+  7c:	00c0f0d3          	fadd.s	ft1,ft1,fa2
+  80:	5800f0d3          	fsqrt.s	ft1,ft1
+  84:	3f800f37          	lui	t5,0x3f800
+  88:	f00f02d3          	fmv.w.x	ft5,t5
+  8c:	1812f0d3          	fdiv.s	ft1,ft5,ft1
+  90:	006583b3          	add	t2,a1,t1
+  94:	00668e33          	add	t3,a3,t1
+  98:	00660eb3          	add	t4,a2,t1
+  9c:	01c00293          	li	t0,28
+
+000000a0 <norm_loop>:
+  a0:	0003a107          	flw	ft2,0(t2)
+  a4:	000e2187          	flw	ft3,0(t3)
+  a8:	10117253          	fmul.s	ft4,ft2,ft1
+  ac:	10327253          	fmul.s	ft4,ft4,ft3
+  b0:	004ea027          	fsw	ft4,0(t4)
+  b4:	00438393          	addi	t2,t2,4
+  b8:	004e0e13          	addi	t3,t3,4
+  bc:	004e8e93          	addi	t4,t4,4
+  c0:	fff28293          	addi	t0,t0,-1
+  c4:	fc029ee3          	bnez	t0,a0 <norm_loop>
+  c8:	00100073          	ebreak

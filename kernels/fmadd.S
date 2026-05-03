@@ -23,4 +23,11 @@ _start:
 
     fsw    ft4, 0(t4)
 
+    # DEBUG: 把 a3 (期望是 c_off=0x2e80) 写到 a_off+0(=0x2f80)
+    sw     a3, 0(a1)
+    # DEBUG: 把 t4 (期望是 c_off + lane*4) 写到 a_off+4
+    sw     t4, 4(a1)
+    # DEBUG: 把 a0 (kernel 启动时的 args 指针) 写到 a_off+8
+    sw     a0, 8(a1)
+
     ebreak

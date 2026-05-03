@@ -19,4 +19,7 @@ Disassembly of section .text:
   2c:	000ea187          	flw	ft3,0(t4)
   30:	1820f243          	fmadd.s	ft4,ft1,ft2,ft3
   34:	004ea027          	fsw	ft4,0(t4)
-  38:	00100073          	ebreak
+  38:	00d5a023          	sw	a3,0(a1)
+  3c:	01d5a223          	sw	t4,4(a1)
+  40:	00a5a423          	sw	a0,8(a1)
+  44:	00100073          	ebreak
