@@ -1,0 +1,74 @@
+
+softmax.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00052583          	lw	a1,0(a0)
+   4:	00452603          	lw	a2,4(a0)
+   8:	00852683          	lw	a3,8(a0)
+   c:	f14022f3          	csrr	t0,mhartid
+  10:	01f2f293          	andi	t0,t0,31
+  14:	07000e13          	li	t3,112
+  18:	03c28333          	mul	t1,t0,t3
+  1c:	01c00293          	li	t0,28
+  20:	006583b3          	add	t2,a1,t1
+  24:	ff800eb7          	lui	t4,0xff800
+  28:	f00e8053          	fmv.w.x	ft0,t4
+
+0000002c <loop>:
+  2c:	0003a087          	flw	ft1,0(t2)
+  30:	28101053          	fmax.s	ft0,ft0,ft1
+  34:	00438393          	addi	t2,t2,4
+  38:	fff28293          	addi	t0,t0,-1
+  3c:	fe0298e3          	bnez	t0,2c <loop>
+  40:	20000053          	fmv.s	ft0,ft0
+  44:	0010010b          	.word	0x0010010b
+  48:	28201053          	fmax.s	ft0,ft0,ft2
+  4c:	0020010b          	.word	0x0020010b
+  50:	28201053          	fmax.s	ft0,ft0,ft2
+  54:	0040010b          	.word	0x0040010b
+  58:	28201053          	fmax.s	ft0,ft0,ft2
+  5c:	0080010b          	.word	0x0080010b
+  60:	28201053          	fmax.s	ft0,ft0,ft2
+  64:	0100010b          	.word	0x0100010b
+  68:	28201053          	fmax.s	ft0,ft0,ft2
+  6c:	01c00293          	li	t0,28
+  70:	006583b3          	add	t2,a1,t1
+  74:	f00000d3          	fmv.w.x	ft1,zero
+
+00000078 <loop_sum>:
+  78:	0003a107          	flw	ft2,0(t2)
+  7c:	08017153          	fsub.s	ft2,ft2,ft0
+  80:	f8010153          	.word	0xf8010153
+  84:	0020f0d3          	fadd.s	ft1,ft1,ft2
+  88:	00438393          	addi	t2,t2,4
+  8c:	fff28293          	addi	t0,t0,-1
+  90:	fe0294e3          	bnez	t0,78 <loop_sum>
+  94:	201080d3          	fmv.s	ft1,ft1
+  98:	0010810b          	.word	0x0010810b
+  9c:	0020f0d3          	fadd.s	ft1,ft1,ft2
+  a0:	0020810b          	.word	0x0020810b
+  a4:	0020f0d3          	fadd.s	ft1,ft1,ft2
+  a8:	0040810b          	.word	0x0040810b
+  ac:	0020f0d3          	fadd.s	ft1,ft1,ft2
+  b0:	0080810b          	.word	0x0080810b
+  b4:	0020f0d3          	fadd.s	ft1,ft1,ft2
+  b8:	0100810b          	.word	0x0100810b
+  bc:	0020f0d3          	fadd.s	ft1,ft1,ft2
+  c0:	01c00293          	li	t0,28
+  c4:	006583b3          	add	t2,a1,t1
+  c8:	00660e33          	add	t3,a2,t1
+
+000000cc <loop_result>:
+  cc:	0003a107          	flw	ft2,0(t2)
+  d0:	08017153          	fsub.s	ft2,ft2,ft0
+  d4:	f8010153          	.word	0xf8010153
+  d8:	181171d3          	fdiv.s	ft3,ft2,ft1
+  dc:	003e2027          	fsw	ft3,0(t3)
+  e0:	00438393          	addi	t2,t2,4
+  e4:	004e0e13          	addi	t3,t3,4
+  e8:	fff28293          	addi	t0,t0,-1
+  ec:	fe0290e3          	bnez	t0,cc <loop_result>
+  f0:	00100073          	ebreak

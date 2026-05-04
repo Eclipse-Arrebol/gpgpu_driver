@@ -27,15 +27,15 @@ Disassembly of section .text:
   44:	fff28293          	addi	t0,t0,-1
   48:	fe0296e3          	bnez	t0,34 <sum_loop>
   4c:	20108053          	fmv.s	ft0,ft1
-  50:	0010010b          	.insn	4, 0x0010010b
+  50:	0010010b          	.word	0x0010010b
   54:	00207053          	fadd.s	ft0,ft0,ft2
-  58:	0020010b          	.insn	4, 0x0020010b
+  58:	0020010b          	.word	0x0020010b
   5c:	00207053          	fadd.s	ft0,ft0,ft2
-  60:	0040010b          	.insn	4, 0x0040010b
+  60:	0040010b          	.word	0x0040010b
   64:	00207053          	fadd.s	ft0,ft0,ft2
-  68:	0080010b          	.insn	4, 0x0080010b
+  68:	0080010b          	.word	0x0080010b
   6c:	00207053          	fadd.s	ft0,ft0,ft2
-  70:	0100010b          	.insn	4, 0x0100010b
+  70:	0100010b          	.word	0x0100010b
   74:	00207053          	fadd.s	ft0,ft0,ft2
   78:	10b070d3          	fmul.s	ft1,ft0,fa1
   7c:	00c0f0d3          	fadd.s	ft1,ft1,fa2

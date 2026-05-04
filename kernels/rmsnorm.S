@@ -1,6 +1,6 @@
 .section .text
 .macro VSHFL_XOR rd, rs1, mask
-    .insn r 0x0B, 0, 0, \rd, \rs1, x\mask
+    .word (\mask << 20) | (\rs1 << 15) | (\rd << 7) | 0x0B
 .endm
 .globl _start
 _start:
@@ -31,15 +31,15 @@ sum_loop:
 
     # === 阶段2：跨 lane 求和（warp shuffle）===
     fmv.s ft0, ft1           # ft0 = 本地平方和
-    VSHFL_XOR ft2, ft0, 1
+    VSHFL_XOR 2, 0, 1
     fadd.s ft0, ft0, ft2
-    VSHFL_XOR ft2, ft0, 2
+    VSHFL_XOR 2, 0, 2
     fadd.s ft0, ft0, ft2
-    VSHFL_XOR ft2, ft0, 4
+    VSHFL_XOR 2, 0, 4
     fadd.s ft0, ft0, ft2
-    VSHFL_XOR ft2, ft0, 8
+    VSHFL_XOR 2, 0, 8
     fadd.s ft0, ft0, ft2
-    VSHFL_XOR ft2, ft0, 16
+    VSHFL_XOR 2, 0, 16
     fadd.s ft0, ft0, ft2    # ft0 = 全局平方和（所有 lane 之和）
 
     # === 阶段3：计算 rrms = 1 / rms ===
