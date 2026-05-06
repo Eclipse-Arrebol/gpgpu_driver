@@ -1,0 +1,94 @@
+
+argmax.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00452583          	lw	a1,4(a0)
+   4:	00852603          	lw	a2,8(a0)
+   8:	00052503          	lw	a0,0(a0)
+   c:	f14022f3          	csrr	t0,mhartid
+  10:	01f2f293          	andi	t0,t0,31
+  14:	00000413          	li	s0,0
+  18:	ff8006b7          	lui	a3,0xff800
+  1c:	f00680d3          	fmv.w.x	ft1,a3
+  20:	0055de13          	srli	t3,a1,0x5
+  24:	00000313          	li	t1,0
+
+00000028 <phaseA_loop>:
+  28:	00531393          	slli	t2,t1,0x5
+  2c:	005383b3          	add	t2,t2,t0
+  30:	00239e93          	slli	t4,t2,0x2
+  34:	00ae8eb3          	add	t4,t4,a0
+  38:	000ea007          	flw	ft0,0(t4)
+  3c:	a0009f53          	flt.s	t5,ft1,ft0
+  40:	000f0663          	beqz	t5,4c <phaseA_skip>
+  44:	200000d3          	fmv.s	ft1,ft0
+  48:	00038413          	mv	s0,t2
+
+0000004c <phaseA_skip>:
+  4c:	00130313          	addi	t1,t1,1
+  50:	fdc31ce3          	bne	t1,t3,28 <phaseA_loop>
+  54:	f0040153          	fmv.w.x	ft2,s0
+  58:	0100818b          	.word	0x0100818b
+  5c:	0101020b          	.word	0x0101020b
+  60:	e00207d3          	fmv.x.w	a5,ft4
+  64:	a0309f53          	flt.s	t5,ft1,ft3
+  68:	000f1863          	bnez	t5,78 <phaseA_skip+0x2c>
+  6c:	a030af53          	feq.s	t5,ft1,ft3
+  70:	000f0a63          	beqz	t5,84 <phaseA_skip+0x38>
+  74:	0087f863          	bgeu	a5,s0,84 <phaseA_skip+0x38>
+  78:	203180d3          	fmv.s	ft1,ft3
+  7c:	20420153          	fmv.s	ft2,ft4
+  80:	00078413          	mv	s0,a5
+  84:	0080818b          	.word	0x0080818b
+  88:	0081020b          	.word	0x0081020b
+  8c:	e00207d3          	fmv.x.w	a5,ft4
+  90:	a0309f53          	flt.s	t5,ft1,ft3
+  94:	000f1863          	bnez	t5,a4 <phaseA_skip+0x58>
+  98:	a030af53          	feq.s	t5,ft1,ft3
+  9c:	000f0a63          	beqz	t5,b0 <phaseA_skip+0x64>
+  a0:	0087f863          	bgeu	a5,s0,b0 <phaseA_skip+0x64>
+  a4:	203180d3          	fmv.s	ft1,ft3
+  a8:	20420153          	fmv.s	ft2,ft4
+  ac:	00078413          	mv	s0,a5
+  b0:	0040818b          	.word	0x0040818b
+  b4:	0041020b          	.word	0x0041020b
+  b8:	e00207d3          	fmv.x.w	a5,ft4
+  bc:	a0309f53          	flt.s	t5,ft1,ft3
+  c0:	000f1863          	bnez	t5,d0 <phaseA_skip+0x84>
+  c4:	a030af53          	feq.s	t5,ft1,ft3
+  c8:	000f0a63          	beqz	t5,dc <phaseA_skip+0x90>
+  cc:	0087f863          	bgeu	a5,s0,dc <phaseA_skip+0x90>
+  d0:	203180d3          	fmv.s	ft1,ft3
+  d4:	20420153          	fmv.s	ft2,ft4
+  d8:	00078413          	mv	s0,a5
+  dc:	0020818b          	.word	0x0020818b
+  e0:	0021020b          	.word	0x0021020b
+  e4:	e00207d3          	fmv.x.w	a5,ft4
+  e8:	a0309f53          	flt.s	t5,ft1,ft3
+  ec:	000f1863          	bnez	t5,fc <phaseA_skip+0xb0>
+  f0:	a030af53          	feq.s	t5,ft1,ft3
+  f4:	000f0a63          	beqz	t5,108 <phaseA_skip+0xbc>
+  f8:	0087f863          	bgeu	a5,s0,108 <phaseA_skip+0xbc>
+  fc:	203180d3          	fmv.s	ft1,ft3
+ 100:	20420153          	fmv.s	ft2,ft4
+ 104:	00078413          	mv	s0,a5
+ 108:	0010818b          	.word	0x0010818b
+ 10c:	0011020b          	.word	0x0011020b
+ 110:	e00207d3          	fmv.x.w	a5,ft4
+ 114:	a0309f53          	flt.s	t5,ft1,ft3
+ 118:	000f1863          	bnez	t5,128 <phaseA_skip+0xdc>
+ 11c:	a030af53          	feq.s	t5,ft1,ft3
+ 120:	000f0a63          	beqz	t5,134 <phaseA_skip+0xe8>
+ 124:	0087f863          	bgeu	a5,s0,134 <phaseA_skip+0xe8>
+ 128:	203180d3          	fmv.s	ft1,ft3
+ 12c:	20420153          	fmv.s	ft2,ft4
+ 130:	00078413          	mv	s0,a5
+ 134:	00029663          	bnez	t0,140 <done>
+ 138:	e0010753          	fmv.x.w	a4,ft2
+ 13c:	00e62023          	sw	a4,0(a2)
+
+00000140 <done>:
+ 140:	00100073          	ebreak
