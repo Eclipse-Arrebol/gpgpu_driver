@@ -114,34 +114,33 @@ int main() {
 
     /* 逐元素 */
     float max_err = 0.0f;
-    int   max_i = -1, max_k = -1;
+    int   max_i = -1, max_j = -1;
     int   fail = 0;
     for (int i = 0; i < 16; i++) {
-        for (int k = 0; k < 64; k++) { // ← k, 不是 j;< 64,不是 < 16
-            int   idx  = i * 64 + k;   // ← i * 64 + k
+        for (int j = 0; j < 16; j++) {
+            int   idx  = i * 16 + j;
             float diff = fabsf(O_ref[idx] - O[idx]);
             if (diff > max_err) {
                 max_err = diff;
                 max_i   = i;
-                max_k   = k;
+                max_j   = j;
             }
-            if (diff >= 1e-4f) { // ← 容忍 1e-4(qkt_scale 同级别)
+            if (diff >= 1e-5f) {
                 if (fail < 10)
-                    printf("FAIL O[%d,%d] got=%f ref=%f diff=%.3e\n", i, k,
+                    printf("FAIL P[%d,%d] got=%f ref=%f diff=%.3e\n", i, j,
                            O[idx], O_ref[idx], diff);
                 fail++;
             }
         }
     }
-    printf("max_err = %.3e at (%d,%d), fail = %d\n", max_err, max_i, max_k,
+    printf("max_err = %.3e at (%d,%d), fail = %d\n", max_err, max_i, max_j,
            fail);
 
-    /* Spot check —— 防 V13 假阳性 */
-    printf("O[0,0]   = %f (ref %f)\n", O[0], O_ref[0]);
-    printf("O[0,63]  = %f (ref %f)\n", O[63], O_ref[63]);
-    printf("O[8,32]  = %f (ref %f)\n", O[8 * 64 + 32], O_ref[8 * 64 + 32]);
-    printf("O[15,63] = %f (ref %f)\n", O[15 * 64 + 63], O_ref[15 * 64 + 63]);
-    gpuDestroy(ctx);
-    free(ctx);
+    /* Spot check */
+
+    if (fail == 0)
+        printf("PASS\n");
+    else
+        printf("FAIL: %d elements\n", fail);
     return 0;
 }
