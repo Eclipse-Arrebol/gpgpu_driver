@@ -1,0 +1,10 @@
+CompileFlags:
+  CompilationDatabase: /home/hp/gpgpu-driver/lib
+  Add:
+    - -I/home/hp/gpgpu-driver/lib/include
+    - -I/home/hp/gpgpu-driver/lib
+  Remove:
+    - --target=riscv64-linux-gnu
+  Compiler: clang
+Diagnostics:
+  UnusedIncludes: Strict

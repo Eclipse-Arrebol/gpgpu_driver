@@ -57,4 +57,9 @@
   },
   "editor.tabSize": 4,
   "editor.insertSpaces": true,
+  "clangd.arguments": [
+    "--compile-commands-dir=/home/hp/gpgpu-driver",
+    "--header-insertion=never",
+    "--background-index"
+  ]
 }

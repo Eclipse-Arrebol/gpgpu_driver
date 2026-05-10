@@ -1,0 +1,117 @@
+[
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/libgpgpu.c",
+        "directory": "/home/hp/gpgpu-driver/lib",
+        "file": "/home/hp/gpgpu-driver/lib/libgpgpu.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/src/buddy.c",
+        "directory": "/home/hp/gpgpu-driver/lib",
+        "file": "/home/hp/gpgpu-driver/lib/src/buddy.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/src/slab_cache.c",
+        "directory": "/home/hp/gpgpu-driver/lib",
+        "file": "/home/hp/gpgpu-driver/lib/src/slab_cache.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_argmax.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_argmax.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_attention.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_attention.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_buddy.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_buddy.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_divergence.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_divergence.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_embeding_lookup.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_embeding_lookup.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_fmadd.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_fmadd.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_gemm.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_gemm.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_libgpgpu.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_libgpgpu.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_pv.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_pv.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_qkt_scale.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_qkt_scale.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_rmsnorm.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_rmsnorm.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_rope.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_rope.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_shuffle.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_shuffle.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_silu.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_silu.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_slab.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_slab.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_softmax.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_softmax.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_softmax16.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_softmax16.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_vec_add.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_vec_add.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_vexp.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_vexp.c"
+    },
+    {
+        "command": "clang -I/home/hp/gpgpu-driver/lib/include -I/home/hp/gpgpu-driver/lib -I/home/hp/gpgpu-driver/lib/test -std=gnu11 -g -c /home/hp/gpgpu-driver/lib/test/test_vmul.c",
+        "directory": "/home/hp/gpgpu-driver/lib/test",
+        "file": "/home/hp/gpgpu-driver/lib/test/test_vmul.c"
+    }
+]
