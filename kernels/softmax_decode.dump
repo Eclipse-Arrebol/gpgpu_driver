@@ -1,0 +1,82 @@
+
+softmax_decode.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00052583          	lw	a1,0(a0)
+   4:	00452603          	lw	a2,4(a0)
+   8:	00852683          	lw	a3,8(a0)
+   c:	f14022f3          	csrr	t0,mhartid
+  10:	01f2f993          	andi	s3,t0,31
+  14:	00d2d313          	srli	t1,t0,0xd
+  18:	00160913          	addi	s2,a2,1
+  1c:	02d302b3          	mul	t0,t1,a3
+  20:	00229293          	slli	t0,t0,0x2
+  24:	005584b3          	add	s1,a1,t0
+  28:	41390a33          	sub	s4,s2,s3
+  2c:	01fa0a13          	addi	s4,s4,31
+  30:	005a5a13          	srli	s4,s4,0x5
+  34:	0c0a0a63          	beqz	s4,108 <done>
+  38:	ff8002b7          	lui	t0,0xff800
+  3c:	f0028053          	fmv.w.x	ft0,t0
+  40:	000a0a93          	mv	s5,s4
+  44:	00299313          	slli	t1,s3,0x2
+  48:	00648333          	add	t1,s1,t1
+
+0000004c <p1_loop>:
+  4c:	00032087          	flw	ft1,0(t1)
+  50:	28101053          	fmax.s	ft0,ft0,ft1
+  54:	08030313          	addi	t1,t1,128
+  58:	fffa8a93          	addi	s5,s5,-1
+  5c:	fe0a98e3          	bnez	s5,4c <p1_loop>
+  60:	0010018b          	.word	0x0010018b
+  64:	28301053          	fmax.s	ft0,ft0,ft3
+  68:	0020018b          	.word	0x0020018b
+  6c:	28301053          	fmax.s	ft0,ft0,ft3
+  70:	0040018b          	.word	0x0040018b
+  74:	28301053          	fmax.s	ft0,ft0,ft3
+  78:	0080018b          	.word	0x0080018b
+  7c:	28301053          	fmax.s	ft0,ft0,ft3
+  80:	0100018b          	.word	0x0100018b
+  84:	28301053          	fmax.s	ft0,ft0,ft3
+  88:	200002d3          	fmv.s	ft5,ft0
+  8c:	f0000353          	fmv.w.x	ft6,zero
+  90:	000a0a93          	mv	s5,s4
+  94:	00299313          	slli	t1,s3,0x2
+  98:	00648333          	add	t1,s1,t1
+
+0000009c <p2_loop>:
+  9c:	00032007          	flw	ft0,0(t1)
+  a0:	08507053          	fsub.s	ft0,ft0,ft5
+  a4:	f8000053          	.word	0xf8000053
+  a8:	00032027          	fsw	ft0,0(t1)
+  ac:	00037353          	fadd.s	ft6,ft6,ft0
+  b0:	08030313          	addi	t1,t1,128
+  b4:	fffa8a93          	addi	s5,s5,-1
+  b8:	fe0a92e3          	bnez	s5,9c <p2_loop>
+  bc:	0013018b          	.word	0x0013018b
+  c0:	00337353          	fadd.s	ft6,ft6,ft3
+  c4:	0023018b          	.word	0x0023018b
+  c8:	00337353          	fadd.s	ft6,ft6,ft3
+  cc:	0043018b          	.word	0x0043018b
+  d0:	00337353          	fadd.s	ft6,ft6,ft3
+  d4:	0083018b          	.word	0x0083018b
+  d8:	00337353          	fadd.s	ft6,ft6,ft3
+  dc:	0103018b          	.word	0x0103018b
+  e0:	00337353          	fadd.s	ft6,ft6,ft3
+  e4:	000a0a93          	mv	s5,s4
+  e8:	00299313          	slli	t1,s3,0x2
+  ec:	00648333          	add	t1,s1,t1
+
+000000f0 <p3_loop>:
+  f0:	00032007          	flw	ft0,0(t1)
+  f4:	18607053          	fdiv.s	ft0,ft0,ft6
+  f8:	00032027          	fsw	ft0,0(t1)
+  fc:	08030313          	addi	t1,t1,128
+ 100:	fffa8a93          	addi	s5,s5,-1
+ 104:	fe0a96e3          	bnez	s5,f0 <p3_loop>
+
+00000108 <done>:
+ 108:	00100073          	ebreak

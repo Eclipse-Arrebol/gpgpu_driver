@@ -1,0 +1,66 @@
+
+pv_decode.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00052583          	lw	a1,0(a0)
+   4:	00452603          	lw	a2,4(a0)
+   8:	00852683          	lw	a3,8(a0)
+   c:	00c52703          	lw	a4,12(a0)
+  10:	01052783          	lw	a5,16(a0)
+  14:	01452803          	lw	a6,20(a0)
+  18:	01852883          	lw	a7,24(a0)
+  1c:	f1402373          	csrr	t1,mhartid
+  20:	01f37c13          	andi	s8,t1,31
+  24:	00d35b93          	srli	s7,t1,0xd
+  28:	031bccb3          	div	s9,s7,a7
+  2c:	00170d13          	addi	s10,a4,1
+  30:	02000293          	li	t0,32
+  34:	02584db3          	div	s11,a6,t0
+  38:	00281993          	slli	s3,a6,0x2
+  3c:	02fb82b3          	mul	t0,s7,a5
+  40:	00229293          	slli	t0,t0,0x2
+  44:	00558433          	add	s0,a1,t0
+  48:	02fc82b3          	mul	t0,s9,a5
+  4c:	030282b3          	mul	t0,t0,a6
+  50:	00229293          	slli	t0,t0,0x2
+  54:	005604b3          	add	s1,a2,t0
+  58:	030b82b3          	mul	t0,s7,a6
+  5c:	00229293          	slli	t0,t0,0x2
+  60:	00568933          	add	s2,a3,t0
+  64:	00000313          	li	t1,0
+  68:	040d8c63          	beqz	s11,c0 <done>
+
+0000006c <k_loop>:
+  6c:	00531393          	slli	t2,t1,0x5
+  70:	007c03b3          	add	t2,s8,t2
+  74:	0503d263          	bge	t2,a6,b8 <end_k>
+  78:	f0000053          	fmv.w.x	ft0,zero
+  7c:	00000e13          	li	t3,0
+  80:	00239e93          	slli	t4,t2,0x2
+  84:	01d48f33          	add	t5,s1,t4
+  88:	00040f93          	mv	t6,s0
+
+0000008c <j_loop>:
+  8c:	03ae0263          	beq	t3,s10,b0 <j_loop_end>
+  90:	000fa087          	flw	ft1,0(t6)
+  94:	000f2107          	flw	ft2,0(t5)
+  98:	1020f1d3          	fmul.s	ft3,ft1,ft2
+  9c:	00307053          	fadd.s	ft0,ft0,ft3
+  a0:	004f8f93          	addi	t6,t6,4
+  a4:	013f0f33          	add	t5,t5,s3
+  a8:	001e0e13          	addi	t3,t3,1
+  ac:	fe1ff06f          	j	8c <j_loop>
+
+000000b0 <j_loop_end>:
+  b0:	01d902b3          	add	t0,s2,t4
+  b4:	0002a027          	fsw	ft0,0(t0)
+
+000000b8 <end_k>:
+  b8:	00130313          	addi	t1,t1,1
+  bc:	fbb348e3          	blt	t1,s11,6c <k_loop>
+
+000000c0 <done>:
+  c0:	00100073          	ebreak
