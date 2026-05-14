@@ -2,7 +2,7 @@ CC     = riscv64-linux-gnu-gcc
 AR     = riscv64-linux-gnu-ar
 CFLAGS = -Wall -I./include -I.
 
-SRC = src/buddy.c src/slab_cache.c libgpgpu.c
+SRC = src/buddy.c src/slab_cache.c src/kv_cache.c libgpgpu.c
 OBJ = $(SRC:.c=.o)
 
 libgpgpu.a: $(OBJ)
