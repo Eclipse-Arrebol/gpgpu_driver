@@ -8,12 +8,14 @@ _start:
     lw   a5, 16(a0)       # a5 = K
     lw   a6, 20(a0)       # a6 = N
 
-    csrrs t0, mhartid, x0
-    srli  t6, t0, 5       # warp_id (bit[12:5])
-    andi  t6, t6, 0xFF
-    andi  t0, t0, 0x1F    # lane_id
-    slli  t6, t6, 5
-    add   t0, t6, t0      # t0 = linear thread id
+    # ===== thread id 计算 (multi-block, 每 block 1 warp = 32 thread) =====
+    # mhartid 布局: [31:13] block_id | [12:5] warp_id | [4:0] lane_id
+    # 约定每 block 只有 1 warp,所以 warp_id 永远是 0,直接跳过 5~12 位
+    csrrs t6, mhartid, x0
+    andi  t1, t6, 0x1F          # t1 = lane_id (bit 0~4)
+    srli  t6, t6, 13             # t6 = block_id (bit 13~31)
+    slli  t6, t6, 5              # block_id * 32
+    add   t0, t6, t1             # t0 = linear thread id = block_id*32 + lane_id
 
     # 越界检查:linear_id >= M*N 的线程不参与
     mul   t5, a4, a6      # t5 = M * N

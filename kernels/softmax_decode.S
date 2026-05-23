@@ -29,7 +29,7 @@ _start:
     sub   s4, s2, s3
     addi  s4, s4, 31
     srli  s4, s4, 5
-    beqz  s4, done
+    #beqz  s4, done
 
     # ====== Pass 1: local_max ======
     li    t0, 0xff800000
@@ -40,12 +40,13 @@ _start:
     add   t1, s1, t1
 
 p1_loop:
+    beqz  s5, p1_done        # 0 次循环时跳过 loop 体
     flw   ft1, 0(t1)
     fmax.s ft0, ft0, ft1
     addi  t1, t1, 128
     addi  s5, s5, -1
-    bnez  s5, p1_loop
-
+    j     p1_loop 
+p1_done:
     VSHFL_XOR 3, 0, 1
     fmax.s ft0, ft0, ft3
     VSHFL_XOR 3, 0, 2
@@ -67,6 +68,7 @@ p1_loop:
     add   t1, s1, t1
 
 p2_loop:
+    beqz s5, p2_done
     flw   ft0, 0(t1)
     fsub.s ft0, ft0, ft5
     VEXP_S 0, 0
@@ -74,8 +76,8 @@ p2_loop:
     fadd.s ft6, ft6, ft0
     addi  t1, t1, 128
     addi  s5, s5, -1
-    bnez  s5, p2_loop
-
+    j     p2_loop 
+p2_done:
     VSHFL_XOR 3, 6, 1
     fadd.s ft6, ft6, ft3
     VSHFL_XOR 3, 6, 2
@@ -89,6 +91,7 @@ p2_loop:
 
     # ====== Pass 3: divide by warp_sum, in-place ======
     mv    s5, s4
+    beqz  s5, done  
     slli  t1, s3, 2
     add   t1, s1, t1
 

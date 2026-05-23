@@ -18,19 +18,21 @@ Disassembly of section .text:
   28:	41390a33          	sub	s4,s2,s3
   2c:	01fa0a13          	addi	s4,s4,31
   30:	005a5a13          	srli	s4,s4,0x5
-  34:	0c0a0a63          	beqz	s4,108 <done>
-  38:	ff8002b7          	lui	t0,0xff800
-  3c:	f0028053          	fmv.w.x	ft0,t0
-  40:	000a0a93          	mv	s5,s4
-  44:	00299313          	slli	t1,s3,0x2
-  48:	00648333          	add	t1,s1,t1
+  34:	ff8002b7          	lui	t0,0xff800
+  38:	f0028053          	fmv.w.x	ft0,t0
+  3c:	000a0a93          	mv	s5,s4
+  40:	00299313          	slli	t1,s3,0x2
+  44:	00648333          	add	t1,s1,t1
 
-0000004c <p1_loop>:
+00000048 <p1_loop>:
+  48:	000a8c63          	beqz	s5,60 <p1_done>
   4c:	00032087          	flw	ft1,0(t1)
   50:	28101053          	fmax.s	ft0,ft0,ft1
   54:	08030313          	addi	t1,t1,128
   58:	fffa8a93          	addi	s5,s5,-1
-  5c:	fe0a98e3          	bnez	s5,4c <p1_loop>
+  5c:	fedff06f          	j	48 <p1_loop>
+
+00000060 <p1_done>:
   60:	0010018b          	.word	0x0010018b
   64:	28301053          	fmax.s	ft0,ft0,ft3
   68:	0020018b          	.word	0x0020018b
@@ -48,35 +50,39 @@ Disassembly of section .text:
   98:	00648333          	add	t1,s1,t1
 
 0000009c <p2_loop>:
-  9c:	00032007          	flw	ft0,0(t1)
-  a0:	08507053          	fsub.s	ft0,ft0,ft5
-  a4:	f8000053          	.word	0xf8000053
-  a8:	00032027          	fsw	ft0,0(t1)
-  ac:	00037353          	fadd.s	ft6,ft6,ft0
-  b0:	08030313          	addi	t1,t1,128
-  b4:	fffa8a93          	addi	s5,s5,-1
-  b8:	fe0a92e3          	bnez	s5,9c <p2_loop>
-  bc:	0013018b          	.word	0x0013018b
-  c0:	00337353          	fadd.s	ft6,ft6,ft3
-  c4:	0023018b          	.word	0x0023018b
-  c8:	00337353          	fadd.s	ft6,ft6,ft3
-  cc:	0043018b          	.word	0x0043018b
-  d0:	00337353          	fadd.s	ft6,ft6,ft3
-  d4:	0083018b          	.word	0x0083018b
-  d8:	00337353          	fadd.s	ft6,ft6,ft3
-  dc:	0103018b          	.word	0x0103018b
-  e0:	00337353          	fadd.s	ft6,ft6,ft3
-  e4:	000a0a93          	mv	s5,s4
-  e8:	00299313          	slli	t1,s3,0x2
-  ec:	00648333          	add	t1,s1,t1
+  9c:	020a8263          	beqz	s5,c0 <p2_done>
+  a0:	00032007          	flw	ft0,0(t1)
+  a4:	08507053          	fsub.s	ft0,ft0,ft5
+  a8:	f8000053          	.word	0xf8000053
+  ac:	00032027          	fsw	ft0,0(t1)
+  b0:	00037353          	fadd.s	ft6,ft6,ft0
+  b4:	08030313          	addi	t1,t1,128
+  b8:	fffa8a93          	addi	s5,s5,-1
+  bc:	fe1ff06f          	j	9c <p2_loop>
 
-000000f0 <p3_loop>:
-  f0:	00032007          	flw	ft0,0(t1)
-  f4:	18607053          	fdiv.s	ft0,ft0,ft6
-  f8:	00032027          	fsw	ft0,0(t1)
-  fc:	08030313          	addi	t1,t1,128
- 100:	fffa8a93          	addi	s5,s5,-1
- 104:	fe0a96e3          	bnez	s5,f0 <p3_loop>
+000000c0 <p2_done>:
+  c0:	0013018b          	.word	0x0013018b
+  c4:	00337353          	fadd.s	ft6,ft6,ft3
+  c8:	0023018b          	.word	0x0023018b
+  cc:	00337353          	fadd.s	ft6,ft6,ft3
+  d0:	0043018b          	.word	0x0043018b
+  d4:	00337353          	fadd.s	ft6,ft6,ft3
+  d8:	0083018b          	.word	0x0083018b
+  dc:	00337353          	fadd.s	ft6,ft6,ft3
+  e0:	0103018b          	.word	0x0103018b
+  e4:	00337353          	fadd.s	ft6,ft6,ft3
+  e8:	000a0a93          	mv	s5,s4
+  ec:	020a8263          	beqz	s5,110 <done>
+  f0:	00299313          	slli	t1,s3,0x2
+  f4:	00648333          	add	t1,s1,t1
 
-00000108 <done>:
- 108:	00100073          	ebreak
+000000f8 <p3_loop>:
+  f8:	00032007          	flw	ft0,0(t1)
+  fc:	18607053          	fdiv.s	ft0,ft0,ft6
+ 100:	00032027          	fsw	ft0,0(t1)
+ 104:	08030313          	addi	t1,t1,128
+ 108:	fffa8a93          	addi	s5,s5,-1
+ 10c:	fe0a96e3          	bnez	s5,f8 <p3_loop>
+
+00000110 <done>:
+ 110:	00100073          	ebreak

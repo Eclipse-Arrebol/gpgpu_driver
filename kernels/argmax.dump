@@ -7,88 +7,126 @@ Disassembly of section .text:
 00000000 <_start>:
    0:	00452583          	lw	a1,4(a0)
    4:	00852603          	lw	a2,8(a0)
-   8:	00052503          	lw	a0,0(a0)
-   c:	f14022f3          	csrr	t0,mhartid
-  10:	01f2f293          	andi	t0,t0,31
-  14:	00000413          	li	s0,0
-  18:	ff8006b7          	lui	a3,0xff800
-  1c:	f00680d3          	fmv.w.x	ft1,a3
-  20:	0055de13          	srli	t3,a1,0x5
-  24:	00000313          	li	t1,0
+   8:	00c52803          	lw	a6,12(a0)
+   c:	00052503          	lw	a0,0(a0)
+  10:	f14022f3          	csrr	t0,mhartid
+  14:	01f2f293          	andi	t0,t0,31
+  18:	7f800437          	lui	s0,0x7f800
+  1c:	fff40413          	addi	s0,s0,-1 # 7f7fffff <__global_pointer$+0x7f7fe623>
+  20:	ff8006b7          	lui	a3,0xff800
+  24:	f00680d3          	fmv.w.x	ft1,a3
+  28:	01f58e13          	addi	t3,a1,31
+  2c:	005e5e13          	srli	t3,t3,0x5
+  30:	00000313          	li	t1,0
 
-00000028 <phaseA_loop>:
-  28:	00531393          	slli	t2,t1,0x5
-  2c:	005383b3          	add	t2,t2,t0
-  30:	00239e93          	slli	t4,t2,0x2
-  34:	00ae8eb3          	add	t4,t4,a0
-  38:	000ea007          	flw	ft0,0(t4)
-  3c:	a0009f53          	flt.s	t5,ft1,ft0
-  40:	000f0663          	beqz	t5,4c <phaseA_skip>
-  44:	200000d3          	fmv.s	ft1,ft0
-  48:	00038413          	mv	s0,t2
+00000034 <phaseA_loop>:
+  34:	00531393          	slli	t2,t1,0x5
+  38:	005383b3          	add	t2,t2,t0
+  3c:	02b3f063          	bgeu	t2,a1,5c <phaseA_skip>
+  40:	00239e93          	slli	t4,t2,0x2
+  44:	00ae8eb3          	add	t4,t4,a0
+  48:	000ea007          	flw	ft0,0(t4)
+  4c:	a0009f53          	flt.s	t5,ft1,ft0
+  50:	000f0663          	beqz	t5,5c <phaseA_skip>
+  54:	200000d3          	fmv.s	ft1,ft0
+  58:	00038413          	mv	s0,t2
 
-0000004c <phaseA_skip>:
-  4c:	00130313          	addi	t1,t1,1
-  50:	fdc31ce3          	bne	t1,t3,28 <phaseA_loop>
-  54:	f0040153          	fmv.w.x	ft2,s0
-  58:	0100818b          	.word	0x0100818b
-  5c:	0101020b          	.word	0x0101020b
-  60:	e00207d3          	fmv.x.w	a5,ft4
-  64:	a0309f53          	flt.s	t5,ft1,ft3
-  68:	000f1863          	bnez	t5,78 <phaseA_skip+0x2c>
-  6c:	a030af53          	feq.s	t5,ft1,ft3
-  70:	000f0a63          	beqz	t5,84 <phaseA_skip+0x38>
-  74:	0087f863          	bgeu	a5,s0,84 <phaseA_skip+0x38>
-  78:	203180d3          	fmv.s	ft1,ft3
-  7c:	20420153          	fmv.s	ft2,ft4
-  80:	00078413          	mv	s0,a5
-  84:	0080818b          	.word	0x0080818b
-  88:	0081020b          	.word	0x0081020b
-  8c:	e00207d3          	fmv.x.w	a5,ft4
-  90:	a0309f53          	flt.s	t5,ft1,ft3
-  94:	000f1863          	bnez	t5,a4 <phaseA_skip+0x58>
-  98:	a030af53          	feq.s	t5,ft1,ft3
-  9c:	000f0a63          	beqz	t5,b0 <phaseA_skip+0x64>
-  a0:	0087f863          	bgeu	a5,s0,b0 <phaseA_skip+0x64>
-  a4:	203180d3          	fmv.s	ft1,ft3
-  a8:	20420153          	fmv.s	ft2,ft4
-  ac:	00078413          	mv	s0,a5
-  b0:	0040818b          	.word	0x0040818b
-  b4:	0041020b          	.word	0x0041020b
-  b8:	e00207d3          	fmv.x.w	a5,ft4
-  bc:	a0309f53          	flt.s	t5,ft1,ft3
-  c0:	000f1863          	bnez	t5,d0 <phaseA_skip+0x84>
-  c4:	a030af53          	feq.s	t5,ft1,ft3
-  c8:	000f0a63          	beqz	t5,dc <phaseA_skip+0x90>
-  cc:	0087f863          	bgeu	a5,s0,dc <phaseA_skip+0x90>
-  d0:	203180d3          	fmv.s	ft1,ft3
-  d4:	20420153          	fmv.s	ft2,ft4
-  d8:	00078413          	mv	s0,a5
-  dc:	0020818b          	.word	0x0020818b
-  e0:	0021020b          	.word	0x0021020b
-  e4:	e00207d3          	fmv.x.w	a5,ft4
-  e8:	a0309f53          	flt.s	t5,ft1,ft3
-  ec:	000f1863          	bnez	t5,fc <phaseA_skip+0xb0>
-  f0:	a030af53          	feq.s	t5,ft1,ft3
-  f4:	000f0a63          	beqz	t5,108 <phaseA_skip+0xbc>
-  f8:	0087f863          	bgeu	a5,s0,108 <phaseA_skip+0xbc>
-  fc:	203180d3          	fmv.s	ft1,ft3
- 100:	20420153          	fmv.s	ft2,ft4
- 104:	00078413          	mv	s0,a5
- 108:	0010818b          	.word	0x0010818b
- 10c:	0011020b          	.word	0x0011020b
- 110:	e00207d3          	fmv.x.w	a5,ft4
- 114:	a0309f53          	flt.s	t5,ft1,ft3
- 118:	000f1863          	bnez	t5,128 <phaseA_skip+0xdc>
- 11c:	a030af53          	feq.s	t5,ft1,ft3
- 120:	000f0a63          	beqz	t5,134 <phaseA_skip+0xe8>
- 124:	0087f863          	bgeu	a5,s0,134 <phaseA_skip+0xe8>
- 128:	203180d3          	fmv.s	ft1,ft3
- 12c:	20420153          	fmv.s	ft2,ft4
- 130:	00078413          	mv	s0,a5
- 134:	00029663          	bnez	t0,140 <done>
- 138:	e0010753          	fmv.x.w	a4,ft2
- 13c:	00e62023          	sw	a4,0(a2)
+0000005c <phaseA_skip>:
+  5c:	00130313          	addi	t1,t1,1
+  60:	fdc31ae3          	bne	t1,t3,34 <phaseA_loop>
+  64:	f0040153          	fmv.w.x	ft2,s0
+  68:	00529f93          	slli	t6,t0,0x5
+  6c:	000f8f93          	mv	t6,t6
+  70:	010f8fb3          	add	t6,t6,a6
+  74:	e00108d3          	fmv.x.w	a7,ft2
+  78:	011fa023          	sw	a7,0(t6)
+  7c:	0100818b          	.word	0x0100818b
+  80:	0101020b          	.word	0x0101020b
+  84:	e00207d3          	fmv.x.w	a5,ft4
+  88:	a0309f53          	flt.s	t5,ft1,ft3
+  8c:	000f1863          	bnez	t5,9c <phaseA_skip+0x40>
+  90:	a030af53          	feq.s	t5,ft1,ft3
+  94:	000f0a63          	beqz	t5,a8 <phaseA_skip+0x4c>
+  98:	0087f863          	bgeu	a5,s0,a8 <phaseA_skip+0x4c>
+  9c:	203180d3          	fmv.s	ft1,ft3
+  a0:	20420153          	fmv.s	ft2,ft4
+  a4:	00078413          	mv	s0,a5
+  a8:	00529f93          	slli	t6,t0,0x5
+  ac:	004f8f93          	addi	t6,t6,4
+  b0:	010f8fb3          	add	t6,t6,a6
+  b4:	e00108d3          	fmv.x.w	a7,ft2
+  b8:	011fa023          	sw	a7,0(t6)
+  bc:	0080818b          	.word	0x0080818b
+  c0:	0081020b          	.word	0x0081020b
+  c4:	e00207d3          	fmv.x.w	a5,ft4
+  c8:	a0309f53          	flt.s	t5,ft1,ft3
+  cc:	000f1863          	bnez	t5,dc <phaseA_skip+0x80>
+  d0:	a030af53          	feq.s	t5,ft1,ft3
+  d4:	000f0a63          	beqz	t5,e8 <phaseA_skip+0x8c>
+  d8:	0087f863          	bgeu	a5,s0,e8 <phaseA_skip+0x8c>
+  dc:	203180d3          	fmv.s	ft1,ft3
+  e0:	20420153          	fmv.s	ft2,ft4
+  e4:	00078413          	mv	s0,a5
+  e8:	00529f93          	slli	t6,t0,0x5
+  ec:	008f8f93          	addi	t6,t6,8
+  f0:	010f8fb3          	add	t6,t6,a6
+  f4:	e00108d3          	fmv.x.w	a7,ft2
+  f8:	011fa023          	sw	a7,0(t6)
+  fc:	0040818b          	.word	0x0040818b
+ 100:	0041020b          	.word	0x0041020b
+ 104:	e00207d3          	fmv.x.w	a5,ft4
+ 108:	a0309f53          	flt.s	t5,ft1,ft3
+ 10c:	000f1863          	bnez	t5,11c <phaseA_skip+0xc0>
+ 110:	a030af53          	feq.s	t5,ft1,ft3
+ 114:	000f0a63          	beqz	t5,128 <phaseA_skip+0xcc>
+ 118:	0087f863          	bgeu	a5,s0,128 <phaseA_skip+0xcc>
+ 11c:	203180d3          	fmv.s	ft1,ft3
+ 120:	20420153          	fmv.s	ft2,ft4
+ 124:	00078413          	mv	s0,a5
+ 128:	00529f93          	slli	t6,t0,0x5
+ 12c:	00cf8f93          	addi	t6,t6,12
+ 130:	010f8fb3          	add	t6,t6,a6
+ 134:	e00108d3          	fmv.x.w	a7,ft2
+ 138:	011fa023          	sw	a7,0(t6)
+ 13c:	0020818b          	.word	0x0020818b
+ 140:	0021020b          	.word	0x0021020b
+ 144:	e00207d3          	fmv.x.w	a5,ft4
+ 148:	a0309f53          	flt.s	t5,ft1,ft3
+ 14c:	000f1863          	bnez	t5,15c <phaseA_skip+0x100>
+ 150:	a030af53          	feq.s	t5,ft1,ft3
+ 154:	000f0a63          	beqz	t5,168 <phaseA_skip+0x10c>
+ 158:	0087f863          	bgeu	a5,s0,168 <phaseA_skip+0x10c>
+ 15c:	203180d3          	fmv.s	ft1,ft3
+ 160:	20420153          	fmv.s	ft2,ft4
+ 164:	00078413          	mv	s0,a5
+ 168:	00529f93          	slli	t6,t0,0x5
+ 16c:	010f8f93          	addi	t6,t6,16
+ 170:	010f8fb3          	add	t6,t6,a6
+ 174:	e00108d3          	fmv.x.w	a7,ft2
+ 178:	011fa023          	sw	a7,0(t6)
+ 17c:	0010818b          	.word	0x0010818b
+ 180:	0011020b          	.word	0x0011020b
+ 184:	e00207d3          	fmv.x.w	a5,ft4
+ 188:	a0309f53          	flt.s	t5,ft1,ft3
+ 18c:	000f1863          	bnez	t5,19c <phaseA_skip+0x140>
+ 190:	a030af53          	feq.s	t5,ft1,ft3
+ 194:	000f0a63          	beqz	t5,1a8 <phaseA_skip+0x14c>
+ 198:	0087f863          	bgeu	a5,s0,1a8 <phaseA_skip+0x14c>
+ 19c:	203180d3          	fmv.s	ft1,ft3
+ 1a0:	20420153          	fmv.s	ft2,ft4
+ 1a4:	00078413          	mv	s0,a5
+ 1a8:	00529f93          	slli	t6,t0,0x5
+ 1ac:	014f8f93          	addi	t6,t6,20
+ 1b0:	010f8fb3          	add	t6,t6,a6
+ 1b4:	e00108d3          	fmv.x.w	a7,ft2
+ 1b8:	011fa023          	sw	a7,0(t6)
+ 1bc:	00529f93          	slli	t6,t0,0x5
+ 1c0:	018f8f93          	addi	t6,t6,24
+ 1c4:	010f8fb3          	add	t6,t6,a6
+ 1c8:	008fa023          	sw	s0,0(t6)
+ 1cc:	00029663          	bnez	t0,1d8 <done>
+ 1d0:	e0010753          	fmv.x.w	a4,ft2
+ 1d4:	00e62023          	sw	a4,0(a2)
 
-00000140 <done>:
- 140:	00100073          	ebreak
+000001d8 <done>:
+ 1d8:	00100073          	ebreak
