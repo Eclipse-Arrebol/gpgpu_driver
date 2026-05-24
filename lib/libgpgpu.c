@@ -76,6 +76,9 @@ int gpuInit(gpgpu_ctx *ctx, const char *dev_path, uint64_t vram_size) {
         close(ctx->fd);
         return -1;
     }
+    printf("  gpuInit: mmap OK addr=%p size=%lu\n", ctx->vram_mmap,
+           (unsigned long)vram_size);
+    fflush(stdout);
 
     if (buddy_init(&ctx->buddy, (uint64_t)ctx->vram_mmap, vram_size) < 0) {
         fprintf(stderr, "gpuInit: buddy_init failed\n");
@@ -83,6 +86,8 @@ int gpuInit(gpgpu_ctx *ctx, const char *dev_path, uint64_t vram_size) {
         close(ctx->fd);
         return -1;
     }
+    printf("  gpuInit: buddy_init OK\n");
+    fflush(stdout);
 
     if (slab_cache_init(&ctx->slab_32, 32, &ctx->buddy, PAGE_ORDER_SLAB_32) < 0)
         goto err_slab;

@@ -119,7 +119,7 @@ static void fill_input(float *h_in, InputPat pat) {
 }
 
 /* ------------------------------------------------------------------ */
-/* 填 weight                                                           */
+/* 填 weight                                                          */
 /* ------------------------------------------------------------------ */
 static void fill_weight(float *h_w, WeightPat pat) {
     switch (pat) {

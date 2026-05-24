@@ -66,6 +66,4 @@ loop:
     blt     s1, t4, loop
 
     # --- Done ---
-    # (按你们 kernel 退出约定,通常是 ebreak 或某个 sentinel;
-    #  请按现有 kernel 的退出方式收尾,我不确定你们用的是 ebreak 还是 j .)
     ebreak
