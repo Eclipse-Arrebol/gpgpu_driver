@@ -1,0 +1,33 @@
+
+broadcast_add.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00052583          	lw	a1,0(a0)
+   4:	00452603          	lw	a2,4(a0)
+   8:	00852683          	lw	a3,8(a0)
+   c:	00c52703          	lw	a4,12(a0)
+  10:	01052783          	lw	a5,16(a0)
+  14:	f1402ff3          	csrr	t6,mhartid
+  18:	01fff313          	andi	t1,t6,31
+  1c:	00dfdf93          	srli	t6,t6,0xd
+  20:	005f9f93          	slli	t6,t6,0x5
+  24:	006f82b3          	add	t0,t6,t1
+  28:	02f70f33          	mul	t5,a4,a5
+  2c:	03e2d863          	bge	t0,t5,5c <done_oob>
+  30:	02f2c333          	div	t1,t0,a5
+  34:	02f2e3b3          	rem	t2,t0,a5
+  38:	00229e13          	slli	t3,t0,0x2
+  3c:	01c58eb3          	add	t4,a1,t3
+  40:	00239f13          	slli	t5,t2,0x2
+  44:	01e68f33          	add	t5,a3,t5
+  48:	000ea007          	flw	ft0,0(t4)
+  4c:	000f2087          	flw	ft1,0(t5)
+  50:	00107153          	fadd.s	ft2,ft0,ft1
+  54:	01c60fb3          	add	t6,a2,t3
+  58:	002fa027          	fsw	ft2,0(t6)
+
+0000005c <done_oob>:
+  5c:	00100073          	ebreak
