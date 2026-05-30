@@ -8,26 +8,24 @@ Disassembly of section .text:
    0:	00052583          	lw	a1,0(a0)
    4:	00452603          	lw	a2,4(a0)
    8:	00852683          	lw	a3,8(a0)
-   c:	f14022f3          	csrr	t0,mhartid
-  10:	01f2f293          	andi	t0,t0,31
-  14:	07000e13          	li	t3,112
-  18:	03c28333          	mul	t1,t0,t3
-  1c:	01c00293          	li	t0,28
-  20:	006583b3          	add	t2,a1,t1
-  24:	00660e33          	add	t3,a2,t1
-  28:	3f800eb7          	lui	t4,0x3f800
-  2c:	f00e8253          	fmv.w.x	ft4,t4
+   c:	f1402ff3          	csrr	t6,mhartid
+  10:	01fff313          	andi	t1,t6,31
+  14:	00dfdf93          	srli	t6,t6,0xd
+  18:	005f9f93          	slli	t6,t6,0x5
+  1c:	006f82b3          	add	t0,t6,t1
+  20:	02d2da63          	bge	t0,a3,54 <done_oob>
+  24:	00229313          	slli	t1,t0,0x2
+  28:	006583b3          	add	t2,a1,t1
+  2c:	00660e33          	add	t3,a2,t1
+  30:	3f800eb7          	lui	t4,0x3f800
+  34:	f00e8253          	fmv.w.x	ft4,t4
+  38:	0003a087          	flw	ft1,0(t2)
+  3c:	20109153          	fneg.s	ft2,ft1
+  40:	f8010153          	.word	0xf8010153
+  44:	00227153          	fadd.s	ft2,ft4,ft2
+  48:	182271d3          	fdiv.s	ft3,ft4,ft2
+  4c:	1030f053          	fmul.s	ft0,ft1,ft3
+  50:	000e2027          	fsw	ft0,0(t3)
 
-00000030 <loop>:
-  30:	0003a087          	flw	ft1,0(t2)
-  34:	20109153          	fneg.s	ft2,ft1
-  38:	f8010153          	.word	0xf8010153
-  3c:	00227153          	fadd.s	ft2,ft4,ft2
-  40:	182271d3          	fdiv.s	ft3,ft4,ft2
-  44:	1030f053          	fmul.s	ft0,ft1,ft3
-  48:	000e2027          	fsw	ft0,0(t3)
-  4c:	00438393          	addi	t2,t2,4
-  50:	004e0e13          	addi	t3,t3,4
-  54:	fff28293          	addi	t0,t0,-1
-  58:	fc029ce3          	bnez	t0,30 <loop>
-  5c:	00100073          	ebreak
+00000054 <done_oob>:
+  54:	00100073          	ebreak
