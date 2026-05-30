@@ -1,0 +1,114 @@
+{
+  "model": "Qwen/Qwen2-0.5B-Instruct",
+  "torch_dtype": "fp32",
+  "attn_implementation": "eager",
+  "config": {
+    "hidden_size": 896,
+    "intermediate_size": 4864,
+    "num_hidden_layers": 24,
+    "num_attention_heads": 14,
+    "num_key_value_heads": 2,
+    "head_dim": 64,
+    "vocab_size": 151936,
+    "rms_norm_eps": 1e-06,
+    "rope_theta": 1000000.0,
+    "tie_word_embeddings": true
+  },
+  "prompt_len": 10,
+  "num_decode_steps": 2,
+  "prompt_ids": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900,
+    1000
+  ],
+  "decoded_token_ids": [
+    3,
+    323
+  ],
+  "steps": [
+    "step_00",
+    "step_01"
+  ],
+  "global_stats": {
+    "rope_cos": {
+      "shape": [
+        12,
+        64
+      ],
+      "dtype": "fp32",
+      "numel": 768,
+      "mean": 0.8441854119300842,
+      "std": 0.4304617941379547,
+      "abs_max": 1.0,
+      "min": -0.9944594502449036,
+      "max": 1.0,
+      "first8": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "last8": [
+        0.9999999403953552,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "rope_sin": {
+      "shape": [
+        12,
+        64
+      ],
+      "dtype": "fp32",
+      "numel": 768,
+      "mean": 0.10171177983283997,
+      "std": 0.3028339743614197,
+      "abs_max": 0.9999902248382568,
+      "min": -0.9999902248382568,
+      "max": 0.9995602965354919,
+      "first8": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "last8": [
+        0.00034785052412189543,
+        0.00022588775027543306,
+        0.00014668735093437135,
+        9.525608038529754e-05,
+        6.185755046317354e-05,
+        4.016915409010835e-05,
+        2.608511204016395e-05,
+        1.69391914823791e-05
+      ]
+    }
+  },
+  "notes": [
+    "All dumped tensors are fp32 raw bytes, no header.",
+    "Per-step tensors have batch=1 squeezed: [seq_len, *] for most, [num_heads, seq_len, head_dim] for q_rope / k_rope.",
+    "logits.bin shape = [seq_len, vocab_size] for step 0 (prefill), [1, vocab_size] for decode steps.",
+    "step_00 is prefill (seq_len = prompt_len). step_i (i>=1) is single-token decode (seq_len = 1).",
+    "RoPE cos/sin dumped for prompt_len + num_decode_steps positions; device must derive longer-context positions via the same rope_theta formula."
+  ]
+}

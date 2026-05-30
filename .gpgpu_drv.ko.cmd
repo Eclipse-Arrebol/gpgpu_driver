@@ -1,1 +1,0 @@
-savedcmd_/home/hp/gpgpu-driver/gpgpu_drv.ko := riscv64-linux-gnu-ld -r -melf64lriscv -z noexecstack --no-warn-rwx-segments --build-id=sha1  -T scripts/module.lds -o /home/hp/gpgpu-driver/gpgpu_drv.ko /home/hp/gpgpu-driver/gpgpu_drv.o /home/hp/gpgpu-driver/gpgpu_drv.mod.o;  make -f ./arch/riscv/Makefile.postlink /home/hp/gpgpu-driver/gpgpu_drv.ko

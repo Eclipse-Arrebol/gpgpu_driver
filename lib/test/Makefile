@@ -2,7 +2,7 @@ CC     = riscv64-linux-gnu-gcc
 AR     = riscv64-linux-gnu-ar
 CFLAGS = -I.. -I../include
 
-SRC = ../libgpgpu.c ../src/buddy.c ../src/slab_cache.c ../src/kv_cache.c ../src/weight_loader.c
+SRC = ../libgpgpu.c ../src/buddy.c ../src/slab_cache.c ../src/kv_cache.c ../src/weight_loader.c ../src/transformer.c
 
 # 自动发现当前目录下所有的 .c 源文件（你的测试程序）
 C_SRCS := $(wildcard *.c)

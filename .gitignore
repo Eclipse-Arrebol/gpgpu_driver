@@ -1,4 +1,7 @@
 build/
+.cache/
+dump/
+
 *.o
 *.ko
 *.mod
@@ -6,5 +9,14 @@ build/
 *.symvers
 *.order
 modules.builtin
+
 *.elf
 *.bin
+
+lib/libgpgpu.a
+lib/test/test_*
+lib/test/infer_tokens
+lib/test/dump_dev_layer12_down
+
+weights/*.bin
+ref/**/*.bin

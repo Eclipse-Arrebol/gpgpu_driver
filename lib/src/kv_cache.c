@@ -94,7 +94,7 @@ uint64_t kv_cache_V_off(const kv_cache_t *cache, uint32_t layer) {
 }
 
 uint32_t kv_cache_cur_pos(const kv_cache_t *cache) {
-    assert(cache->pending > 0 && "cur_pos called before any append");
+    assert(cache->filled < cache->max_seq && "kv cache full");
     return cache->filled;
 }
 
