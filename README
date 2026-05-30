@@ -4,6 +4,11 @@
 
 这个项目的目标不是做一个高性能推理框架，而是把 GPU 软件栈的关键路径拆开，从底层设备模型到上层 transformer 推理完整跑通。
 
+# qemu
+项目地址：本项目是 QEMU 训练营 2026 GPU赛题的基础上改的
+https://github.com/gevico/qemu-camp-2026-exper-Eclipse-Arrebol
+
+
 ## 当前状态
 
 当前已经跑通：
