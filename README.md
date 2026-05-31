@@ -983,3 +983,8 @@ python3 tools/check_layer.py
 - FP register 在解释器中存的是 bit pattern，所有 FP 读写必须显式转换。
 - `kernel_args` MMIO register 漏实现时，kernel 会读到错误 args 地址。
 - VM 里的权重文件可能和 host 不一致，必须用 checksum gate 防止错误输入污染算子调试。
+
+## 推理展示
+![alt text](./img/image-1.png)
+![alt text](./img/image.png)
+![alt text](./img/image-2.png)
